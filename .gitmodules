@@ -1,0 +1,36 @@
+[submodule "browser"]
+	path = browser
+	url = git@github.com-BabelForge:babelforge/babel-chrome-browser.git
+	branch = main
+[submodule "library/viewer-kit"]
+	path = library/viewer-kit
+	url = git@github.com-BabelForge:babelforge/babel-chrome-viewer-kit.git
+	branch = main
+[submodule "modules/demo-module"]
+	path = modules/demo-module
+	url = git@github.com-BabelForge:babelforge/babelchrome-demo-module.git
+	branch = main
+[submodule "modules/json-viewer-module"]
+	path = modules/json-viewer-module
+	url = git@github.com-BabelForge:babelforge/babelchrome-json-viewer-module.git
+	branch = main
+[submodule "modules/laravel-module"]
+	path = modules/laravel-module
+	url = git@github.com-BabelForge:babelforge/babelchrome-laravel-module.git
+	branch = main
+[submodule "modules/markdown-viewer-module"]
+	path = modules/markdown-viewer-module
+	url = git@github.com-BabelForge:babelforge/babelchrome-markdown-viewer-module.git
+	branch = main
+[submodule "modules/openapi-viewer-module"]
+	path = modules/openapi-viewer-module
+	url = git@github.com-BabelForge:babelforge/babelchrome-openapi-viewer-module.git
+	branch = main
+[submodule "modules/plain-php-module"]
+	path = modules/plain-php-module
+	url = git@github.com-BabelForge:babelforge/babelchrome-plain-php-module.git
+	branch = main
+[submodule "modules/project-launcher-module"]
+	path = modules/project-launcher-module
+	url = git@github.com-BabelForge:babelforge/babelchrome-project-launcher-module.git
+	branch = main

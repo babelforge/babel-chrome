@@ -1,0 +1,12 @@
+/**/.DS_Store
+/.idea
+/ai
+/var/
+/vendor/
+/**/vendor/
+/**/var/
+/**/.phpunit.cache/
+/**/.php-cs-fixer.cache
+/.phpunit.cache/
+.php-cs-fixer.cache
+/zip/
