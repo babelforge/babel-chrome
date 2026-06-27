@@ -24,7 +24,7 @@ babelforge/babelchrome-project-launcher-module
 Once the meta repository is initialized, a full checkout should use:
 
 ```bash
-git clone --recurse-submodules <repo-url>
+git clone --recurse-submodules https://github.com/babelforge/babel-chrome.git
 ```
 
 Existing clones should update with:
@@ -32,6 +32,18 @@ Existing clones should update with:
 ```bash
 git submodule update --init --recursive
 ```
+
+## Submodule URLs
+
+The public `.gitmodules` file uses HTTPS GitHub URLs on purpose. This keeps submodule links directly clickable from the GitHub web interface and lets external users clone the workspace without knowing any local SSH host alias.
+
+Developers who prefer SSH can still override submodule remotes locally after cloning:
+
+```bash
+git -C browser remote set-url origin git@github.com-BabelForge:babelforge/babel-chrome-browser.git
+```
+
+That local override should not be committed to the meta repository.
 
 ## Daily Workflow
 
