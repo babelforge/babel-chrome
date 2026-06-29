@@ -4,7 +4,7 @@ Navigation: [Previous: Workspace Layout](02-workspace-layout.md) | [README](READ
 
 The root `babel-chrome` repository is intended to be a meta repository. The browser, libraries, and modules should be independent repositories attached as submodules.
 
-## Planned Repositories
+## Repositories
 
 ```text
 babelforge/babel-chrome
@@ -21,7 +21,7 @@ babelforge/babelchrome-project-launcher-module
 
 ## Clone Workflow
 
-Once the meta repository is initialized, a full checkout should use:
+A full checkout should use:
 
 ```bash
 git clone --recurse-submodules https://github.com/babelforge/babel-chrome.git
@@ -31,6 +31,12 @@ Existing clones should update with:
 
 ```bash
 git submodule update --init --recursive
+```
+
+To refresh every submodule after remote updates:
+
+```bash
+git submodule update --remote --recursive
 ```
 
 ## Submodule URLs
@@ -55,6 +61,19 @@ Changes are committed in the repository that owns the files:
 - root docs and packaging orchestration go into the root meta repository.
 
 After changing a submodule, the root repository must also be updated if the meta workspace should point to the new submodule commit.
+
+Example:
+
+```bash
+cd modules/markdown-viewer-module
+git add .
+git commit -m "Improve Markdown viewer"
+git push
+cd ../..
+git add modules/markdown-viewer-module
+git commit -m "Update Markdown viewer pointer"
+git push
+```
 
 ## Risk
 

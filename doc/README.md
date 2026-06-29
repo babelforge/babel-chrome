@@ -14,6 +14,7 @@ This documentation describes the `babel-chrome` meta workspace. The workspace co
 4. [Module System](04-module-system.md)
 5. [Packaging Workflow](05-packaging-workflow.md)
 6. [Maintenance Guide](06-maintenance-guide.md)
+7. [Release Artifacts](07-release-artifacts.md)
 
 ## Current Target Layout
 

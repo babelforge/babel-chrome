@@ -1,6 +1,6 @@
 # Maintenance Guide
 
-Navigation: [Previous: Packaging Workflow](05-packaging-workflow.md) | [README](README.md)
+Navigation: [Previous: Packaging Workflow](05-packaging-workflow.md) | [README](README.md) | [Next: Release Artifacts](07-release-artifacts.md)
 
 Maintenance work should preserve repository ownership boundaries.
 
@@ -53,4 +53,4 @@ When public documentation changes, update the BabelForge shared documentation re
 /Users/user/Documents/__Dev/_projets/__README/- associated-mini-projects -/PhpNoobs/all-projects/projects.json
 ```
 
-Navigation: [Previous: Packaging Workflow](05-packaging-workflow.md) | [README](README.md)
+Navigation: [Previous: Packaging Workflow](05-packaging-workflow.md) | [README](README.md) | [Next: Release Artifacts](07-release-artifacts.md)

@@ -69,4 +69,14 @@ Current module sources:
 - `babelforge.plain-php-module`;
 - `babelforge.project-launcher`.
 
+## Installation Flow
+
+Source modules are packaged first, then installed from the browser UI. BabelChrome does not load module source directories directly from the meta workspace.
+
+```bash
+./tools/dev2prod.sh babelforge.markdown-viewer
+```
+
+Then install the generated archive from `babelchrome://modules`.
+
 Navigation: [Previous: Git And Submodules](03-git-and-submodules.md) | [README](README.md) | [Next: Packaging Workflow](05-packaging-workflow.md)
