@@ -36,6 +36,18 @@ composer qa
 
 Commit root documentation, root scripts, and submodule pointer updates in the root meta repository.
 
+Run the quick workspace check before pushing orchestration changes:
+
+```bash
+./tools/check-workspace.sh
+```
+
+Use the full check before preparing release artifacts:
+
+```bash
+./tools/check-workspace.sh --full
+```
+
 Do not commit:
 
 - `ai/`;

@@ -69,3 +69,17 @@ Install generated zips from the running browser:
 4. Keep the module enabled.
 
 Viewer behavior such as Markdown, OpenAPI, and JSON rendering exists only after the matching module is installed and enabled.
+
+## Validate Workspace
+
+Run the same quick validation used after the submodule migration:
+
+```bash
+./tools/check-workspace.sh
+```
+
+For a broader check across every module:
+
+```bash
+./tools/check-workspace.sh --full
+```

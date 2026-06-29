@@ -20,6 +20,12 @@ Module artifacts are production zips generated from `modules/*` with:
 
 Each zip contains the runtime files for one module, including its own Composer production dependencies. The zip is installed from `babelchrome://modules`.
 
+Before publishing module artifacts, run:
+
+```bash
+./tools/check-workspace.sh --full
+```
+
 ## Library Releases
 
 Libraries such as `library/viewer-kit/` are Composer packages. They are not installed directly in BabelChrome. Modules consume them through Composer and ship the resolved production dependency in their own zip.

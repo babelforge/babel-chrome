@@ -62,15 +62,17 @@ The expected reproducibility check is:
 ```bash
 git clone --recurse-submodules https://github.com/babelforge/babel-chrome.git
 cd babel-chrome
-composer install --working-dir=browser/src/ExtensionHost
-composer install --working-dir=modules/markdown-viewer-module
-composer install --working-dir=modules/demo-module
-composer qa --working-dir=browser/src/ExtensionHost
-composer qa --working-dir=modules/markdown-viewer-module
-composer qa --working-dir=modules/demo-module
-./tools/dev2prod.sh babelforge.demo-module
+./tools/check-workspace.sh
 ```
 
 This verifies the host, one Symfony viewer module, one non-viewer module, and one production package.
+
+For release preparation, run the full workspace check:
+
+```bash
+./tools/check-workspace.sh --full
+```
+
+This runs QA for every module exposing a Composer `qa` script and builds every module zip.
 
 Navigation: [Previous: Module System](04-module-system.md) | [README](README.md) | [Next: Maintenance Guide](06-maintenance-guide.md)
