@@ -26,6 +26,20 @@ Before publishing module artifacts, run:
 ./tools/check-workspace.sh --full
 ```
 
+Then prepare release metadata:
+
+```bash
+./tools/prepare-module-release.sh
+```
+
+The release preparation script builds module zips, verifies their presence, writes `zip/SHA256SUMS`, and writes `zip/modules-release-manifest.json`.
+
+For a single module:
+
+```bash
+./tools/prepare-module-release.sh --module babelforge.demo-module
+```
+
 ## Library Releases
 
 Libraries such as `library/viewer-kit/` are Composer packages. They are not installed directly in BabelChrome. Modules consume them through Composer and ship the resolved production dependency in their own zip.

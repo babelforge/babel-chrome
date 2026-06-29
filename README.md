@@ -83,3 +83,19 @@ For a broader check across every module:
 ```bash
 ./tools/check-workspace.sh --full
 ```
+
+## Prepare Module Release Artifacts
+
+Build module zips and generate release metadata:
+
+```bash
+./tools/prepare-module-release.sh
+```
+
+For one module:
+
+```bash
+./tools/prepare-module-release.sh --module babelforge.demo-module
+```
+
+The script writes `zip/SHA256SUMS` and `zip/modules-release-manifest.json`.

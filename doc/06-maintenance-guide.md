@@ -48,6 +48,12 @@ Use the full check before preparing release artifacts:
 ./tools/check-workspace.sh --full
 ```
 
+Prepare module release metadata with:
+
+```bash
+./tools/prepare-module-release.sh
+```
+
 Do not commit:
 
 - `ai/`;
