@@ -69,6 +69,8 @@ Viewer modules declare handled file extensions through `file-type-handler`. Enab
 
 Viewer modules that share the common file-viewer UI should declare `supports: ["file-viewer"]` and may use `babelforge/babel-chrome-viewer-kit`.
 
+The module integration details are documented in [Module Integration Features](08-module-integration-features.md). That page covers viewer dispatch, request headers, settings routes, address badges, open-with endpoints, lifecycle hooks, drag-and-drop hooks, message relay, and internal-page context menu conventions.
+
 ## Available Modules
 
 Current module sources:
