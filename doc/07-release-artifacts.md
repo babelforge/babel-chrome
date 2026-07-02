@@ -42,13 +42,15 @@ For a single module:
 
 ## Module Update Source
 
-BabelChrome uses `modules-release-manifest.json` as the update catalog for the `Check Updates` action on `babelchrome://modules`. A release source may be:
+BabelChrome can use either a remote release manifest or a local zip folder for the `Check Updates` action on `babelchrome://modules`. A release source may be:
 
 - a remote URL serving `modules-release-manifest.json`;
 - a remote base URL containing `modules-release-manifest.json` and the referenced zips;
-- a local folder containing `modules-release-manifest.json` and the referenced zips.
+- a local folder containing module zip archives.
 
-When both a remote URL and a local folder are configured, BabelChrome tries the remote manifest first and falls back to the local folder if the remote source cannot be read.
+Remote sources use `modules-release-manifest.json` as the update catalog.
+Local sources do not require this file: BabelChrome scans the folder, reads `manifest.json` from each zip whose size or modification time changed, and keeps a local cache under its application support directory.
+When both a remote URL and a local folder are configured, BabelChrome tries the remote manifest first and falls back to the local zip folder if the remote source cannot be read.
 
 ## Library Releases
 
