@@ -6,6 +6,7 @@ PROJECT_DIR="$(CDPATH= cd -- "${SCRIPT_DIR}/.." && pwd)"
 BABEL_CHROME_BROWSER_DIR="${BABEL_CHROME_BROWSER_DIR:-${BABEL_CHROME_WORKSPACE:-$(CDPATH= cd -- "${PROJECT_DIR}/browser" && pwd)}}"
 MODULES_DIR="${PROJECT_DIR}/modules"
 ZIP_DIR="${PROJECT_DIR}/zip"
+OLD_ZIP_DIR="${ZIP_DIR}/old"
 BUILD_ROOT="${PROJECT_DIR}/var/dev2prod/$$"
 MODULE_FILTER="${1:-}"
 
@@ -74,6 +75,35 @@ resolve_module_dirs() {
   exit 1
 }
 
+archive_previous_module_zips() {
+  local module_id="$1"
+  local module_version="$2"
+  local target_name="${module_id}-${module_version}.zip"
+  local existing_zip
+  local existing_name
+  local destination
+  local timestamp
+
+  shopt -s nullglob
+  for existing_zip in "${ZIP_DIR}/${module_id}-"*.zip; do
+    existing_name="$(basename "${existing_zip}")"
+    if [[ "${existing_name}" == "${target_name}" ]]; then
+      continue
+    fi
+
+    mkdir -p "${OLD_ZIP_DIR}"
+    destination="${OLD_ZIP_DIR}/${existing_name}"
+    if [[ -e "${destination}" ]]; then
+      timestamp="$(date +%Y%m%d%H%M%S)"
+      destination="${OLD_ZIP_DIR}/${existing_name%.zip}.${timestamp}.zip"
+    fi
+
+    mv "${existing_zip}" "${destination}"
+    echo "Archived ${existing_name} to ${destination}"
+  done
+  shopt -u nullglob
+}
+
 ship_module() {
   local module_dir="$1"
   local module_manifest="${module_dir}/manifest.json"
@@ -114,6 +144,7 @@ ship_module() {
 
   target_path="${ZIP_DIR}/${module_id}-${module_version}.zip"
   php "${BABEL_CHROME_BROWSER_DIR}/tools/ship-php-module.php" "${build_module_dir}" "${target_path}" >/dev/null
+  archive_previous_module_zips "${module_id}" "${module_version}"
   echo "Built ${target_path}"
 }
 
