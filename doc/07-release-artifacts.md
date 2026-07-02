@@ -40,6 +40,16 @@ For a single module:
 ./tools/prepare-module-release.sh --module babelforge.demo-module
 ```
 
+## Module Update Source
+
+BabelChrome uses `modules-release-manifest.json` as the update catalog for the `Check Updates` action on `babelchrome://modules`. A release source may be:
+
+- a remote URL serving `modules-release-manifest.json`;
+- a remote base URL containing `modules-release-manifest.json` and the referenced zips;
+- a local folder containing `modules-release-manifest.json` and the referenced zips.
+
+When both a remote URL and a local folder are configured, BabelChrome tries the remote manifest first and falls back to the local folder if the remote source cannot be read.
+
 ## Library Releases
 
 Libraries such as `library/viewer-kit/` are Composer packages. They are not installed directly in BabelChrome. Modules consume them through Composer and ship the resolved production dependency in their own zip.
