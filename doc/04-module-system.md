@@ -46,6 +46,18 @@ Modules can expose stable BabelChrome routes through their manifest:
 
 The host passes route context and source metadata through `BABELCHROME_*` environment values.
 
+## Tab Placement
+
+Modules can request a preferred browser group with:
+
+```json
+{
+  "defaultGroup": "Servers"
+}
+```
+
+When a module tab is opened or recreated, BabelChrome creates that group if needed and places the tab there. This is a default placement hint, not a lock: users can still move the tab to another group.
+
 ## Viewers
 
 Viewer modules declare handled file extensions through `file-type-handler`. Enabled viewer modules contribute to:
