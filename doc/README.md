@@ -17,6 +17,10 @@ This documentation describes the `babel-chrome` meta workspace. The workspace co
 7. [Release Artifacts](07-release-artifacts.md)
 8. [Module Integration Features](08-module-integration-features.md)
 
+## Related Submodule Documentation
+
+- [Browser Source Layout](../browser/doc/07-browser-source-layout.md) documents the native application source tree and the responsibility boundaries under `browser/src/`.
+
 ## Current Target Layout
 
 ```text

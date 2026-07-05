@@ -43,6 +43,8 @@ It should not directly own browser, library, or module implementation files afte
 - module install/update/remove UI;
 - local protocols such as `babelchrome://viewer/...` and `babelchrome://server/...`.
 
+The detailed native source layout is documented in [Browser Source Layout](../browser/doc/07-browser-source-layout.md). The browser keeps responsibilities split between app lifecycle, CEF integration, window orchestration, UI controls, services, storage, and theme support.
+
 ## Library
 
 `library/viewer-kit/` contains `babelforge/babel-chrome-viewer-kit`, a reusable Symfony-oriented library for viewer modules.
