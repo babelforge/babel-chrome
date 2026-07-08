@@ -11,6 +11,8 @@ Each module is discovered from its root `manifest.json`. The important public fi
 - `id`, `name`, `version`, `description`, and `requirements` metadata such as `{ "php": ">=8.4" }`;
 - `runtime.type` and `runtime.entrypoint`;
 - `runtime.processIsolation` when a module needs a dedicated PHP process;
+- `readiness` for optional read-only readiness checks;
+- `setup` for optional user-confirmed setup commands;
 - `routes` for stable `babelchrome://` URLs;
 - `fileTypes` for generic viewer routing;
 - `file-type-handler.fileTypes` for file type capability advertising;
@@ -21,6 +23,60 @@ Each module is discovered from its root `manifest.json`. The important public fi
 - `defaultGroup` for preferred tab placement.
 
 `defaultGroup` is only a placement hint. BabelChrome creates the group if needed when the module tab is opened or recreated, but the user can move the tab afterward.
+
+## Runtime Types
+
+The module contract is runtime-aware. The currently implemented runtimes are:
+
+- `php-web`, which executes a PHP front controller such as `public/index.php`;
+- `php-class`, which executes a PHP class implementing `BabelChromeModuleInterface`.
+
+Legacy manifests remain accepted:
+
+- `web` is normalized to `php-web`;
+- `class` or a missing runtime is normalized to `php-class`.
+
+Future runtime families such as `static-web`, `process-web`, and `process-runtime` are planned but not implemented yet. Documentation should not describe them as available until the ExtensionHost supports them.
+
+## Readiness And Setup
+
+Modules may declare an optional readiness check:
+
+```json
+{
+  "readiness": {
+    "type": "command",
+    "command": "./bin/babelchrome-ready",
+    "timeoutMs": 5000
+  }
+}
+```
+
+Readiness commands are intended to be read-only, idempotent, and fast. The ExtensionHost runs supported readiness commands from the module root and expects a JSON object such as:
+
+```json
+{
+  "ready": false,
+  "status": "missing-dependencies",
+  "messages": ["Node.js >= 22 is required"],
+  "canSetup": true
+}
+```
+
+Modules may also declare an optional setup command:
+
+```json
+{
+  "setup": {
+    "type": "command",
+    "command": "./bin/babelchrome-setup",
+    "timeoutMs": 600000,
+    "requiresConfirmation": true
+  }
+}
+```
+
+Setup commands are metadata at this stage. BabelChrome must not run setup automatically during install, startup, or update; setup requires an explicit user action.
 
 ## Stable Module Routes
 

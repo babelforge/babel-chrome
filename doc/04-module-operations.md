@@ -8,7 +8,7 @@ The technical module contract is documented separately in [Module Integration Co
 
 ## Source Ownership
 
-Modules are independent PHP projects. The meta workspace references them under `modules/`, but each module owns its own source tree, Composer dependencies, assets, tests, documentation, and release version.
+Modules are independent extension projects. The meta workspace references them under `modules/`, but each module owns its own source tree, dependencies, assets, tests, documentation, and release version. The current maintained modules are PHP projects because the implemented runtime handlers are `php-web` and `php-class`.
 
 Current module sources:
 
