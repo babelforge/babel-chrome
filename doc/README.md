@@ -11,11 +11,11 @@ This documentation describes the `babel-chrome` meta workspace. The workspace co
 1. [Overview](01-overview.md)
 2. [Workspace Layout](02-workspace-layout.md)
 3. [Git And Submodules](03-git-and-submodules.md)
-4. [Module System](04-module-system.md)
+4. [Module Operations](04-module-operations.md)
 5. [Packaging Workflow](05-packaging-workflow.md)
 6. [Maintenance Guide](06-maintenance-guide.md)
 7. [Release Artifacts](07-release-artifacts.md)
-8. [Module Integration Features](08-module-integration-features.md)
+8. [Module Integration Contract](08-module-integration-contract.md)
 
 ## Related Submodule Documentation
 

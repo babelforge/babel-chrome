@@ -1,14 +1,14 @@
-# Module Integration Features
+# Module Integration Contract
 
 Navigation: [Previous: Release Artifacts](07-release-artifacts.md) | [README](README.md)
 
-This page documents the integration features that modules can rely on when they are installed in BabelChrome. The native browser should stay module-agnostic: modules declare capabilities in `manifest.json`, and BabelChrome exposes small generic services around routing, file handling, lifecycle, local application opening, and message delivery.
+This page is the canonical contract for the integration features that modules can rely on when they are installed in BabelChrome. The native browser should stay module-agnostic: modules declare capabilities in `manifest.json`, and BabelChrome exposes small generic services around routing, file handling, lifecycle, local application opening, and message delivery.
 
 ## Manifest Surface
 
 Each module is discovered from its root `manifest.json`. The important public fields are:
 
-- `id`, `name`, `version`, `description`, and `requirements.php`;
+- `id`, `name`, `version`, `description`, and `requirements` metadata such as `{ "php": ">=8.4" }`;
 - `runtime.type` and `runtime.entrypoint`;
 - `runtime.processIsolation` when a module needs a dedicated PHP process;
 - `routes` for stable `babelchrome://` URLs;
@@ -66,10 +66,12 @@ The generic viewer URL should be preferred over direct module URLs in external i
 Enabled modules that declare `file-type-handler.fileTypes` contribute to the request header sent by BabelChrome to HTTP and HTTPS pages:
 
 ```text
-X-BabelChrome-File-Types: md,markdown,mdown,mkd,mmd,mermaid,yaml,yml,json
+X-BabelChrome-File-Types: md,markdown,mmd,mermaid,yaml,yml,json
 ```
 
 This header is intentionally narrow. It advertises handled file extensions only; it does not expose module names, versions, or installed paths.
+
+`fileTypes` and `file-type-handler.fileTypes` can differ. `fileTypes` controls viewer source matching, while `file-type-handler.fileTypes` controls what BabelChrome advertises to HTTP and HTTPS pages.
 
 The header is refreshed when modules are installed, removed, enabled, or disabled. A web app can use it with the User-Agent marker to decide whether to emit `babelchrome://viewer/...` links for files that BabelChrome can render.
 

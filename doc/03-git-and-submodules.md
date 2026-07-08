@@ -1,6 +1,6 @@
 # Git And Submodules
 
-Navigation: [Previous: Workspace Layout](02-workspace-layout.md) | [README](README.md) | [Next: Module System](04-module-system.md)
+Navigation: [Previous: Workspace Layout](02-workspace-layout.md) | [README](README.md) | [Next: Module Operations](04-module-operations.md)
 
 The root `babel-chrome` repository is intended to be a meta repository. The browser, libraries, and modules should be independent repositories attached as submodules.
 
@@ -79,4 +79,4 @@ git push
 
 Submodules make ownership explicit but require discipline. A pushed module change is not automatically reflected in the root meta repository until the submodule pointer is committed there.
 
-Navigation: [Previous: Workspace Layout](02-workspace-layout.md) | [README](README.md) | [Next: Module System](04-module-system.md)
+Navigation: [Previous: Workspace Layout](02-workspace-layout.md) | [README](README.md) | [Next: Module Operations](04-module-operations.md)

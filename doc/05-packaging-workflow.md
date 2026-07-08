@@ -1,6 +1,6 @@
 # Packaging Workflow
 
-Navigation: [Previous: Module System](04-module-system.md) | [README](README.md) | [Next: Maintenance Guide](06-maintenance-guide.md)
+Navigation: [Previous: Module Operations](04-module-operations.md) | [README](README.md) | [Next: Maintenance Guide](06-maintenance-guide.md)
 
 Production modules are generated from development module sources. The meta workspace owns the packaging orchestration, but each module owns its own source, Composer lock, assets, tests, and dependencies.
 
@@ -75,4 +75,4 @@ For release preparation, run the full workspace check:
 
 This runs QA for every module exposing a Composer `qa` script and builds every module zip.
 
-Navigation: [Previous: Module System](04-module-system.md) | [README](README.md) | [Next: Maintenance Guide](06-maintenance-guide.md)
+Navigation: [Previous: Module Operations](04-module-operations.md) | [README](README.md) | [Next: Maintenance Guide](06-maintenance-guide.md)

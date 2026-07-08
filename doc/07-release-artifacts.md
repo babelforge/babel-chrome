@@ -1,6 +1,6 @@
 # Release Artifacts
 
-Navigation: [Previous: Maintenance Guide](06-maintenance-guide.md) | [README](README.md) | [Next: Module Integration Features](08-module-integration-features.md)
+Navigation: [Previous: Maintenance Guide](06-maintenance-guide.md) | [README](README.md) | [Next: Module Integration Contract](08-module-integration-contract.md)
 
 BabelChrome release artifacts are produced from independent repositories but coordinated from the meta workspace.
 
@@ -74,4 +74,4 @@ The recommended public release model is:
 
 This keeps the repository history small while still giving users direct downloadable packages.
 
-Navigation: [Previous: Maintenance Guide](06-maintenance-guide.md) | [README](README.md) | [Next: Module Integration Features](08-module-integration-features.md)
+Navigation: [Previous: Maintenance Guide](06-maintenance-guide.md) | [README](README.md) | [Next: Module Integration Contract](08-module-integration-contract.md)
