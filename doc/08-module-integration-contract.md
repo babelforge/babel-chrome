@@ -76,7 +76,20 @@ Modules may also declare an optional setup command:
 }
 ```
 
-Setup commands are metadata at this stage. BabelChrome must not run setup automatically during install, startup, or update; setup requires an explicit user action.
+Setup commands are executable module actions, but BabelChrome must not run them automatically during install, startup, or update; setup requires an explicit user action.
+Setup commands are exposed from the module details page when the module declares `setup` and its readiness state is not already ready. BabelChrome asks the user for confirmation, runs the command from the module root, captures stdout and stderr, then re-runs readiness so the module details page reflects the new state.
+
+The setup response follows the same JSON-first convention as readiness. A command may print a JSON object such as:
+
+```json
+{
+  "ok": true,
+  "status": "completed",
+  "messages": ["Dependencies installed"]
+}
+```
+
+If stdout is not JSON, BabelChrome still shows stdout, stderr, timeout state, and exit code. A failing setup command must not break the browser or disable the module automatically.
 
 ## Stable Module Routes
 
