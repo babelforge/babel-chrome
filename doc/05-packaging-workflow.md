@@ -2,7 +2,7 @@
 
 Navigation: [Previous: Module Operations](04-module-operations.md) | [README](README.md) | [Next: Maintenance Guide](06-maintenance-guide.md)
 
-Production modules are generated from development module sources. The meta workspace owns the packaging orchestration, but each module owns its own source, Composer lock, assets, tests, and dependencies.
+Production modules are generated from development module sources. The meta workspace owns the packaging orchestration, but each module owns its own source, assets, tests, dependencies, and release version. PHP modules also own their Composer lock.
 
 ## Build One Module
 
@@ -26,13 +26,12 @@ browser/tools/build-php-modules.sh
 
 ## Production Package Contents
 
-The shipper copies the module into a temporary build directory, installs dependencies, compiles Symfony AssetMapper assets when available, installs Composer dependencies without dev packages, and creates a zip in `zip/`.
+The shipper copies the module into a temporary build directory, prepares runtime dependencies when the module type needs them, compiles Symfony AssetMapper assets when available, installs Composer dependencies without dev packages for PHP modules, and creates a zip in `zip/`.
 
 Runtime packages keep the files needed to execute the module:
 
 - `manifest.json`;
-- `composer.json` and `composer.lock`;
-- `vendor/`;
+- `composer.json`, `composer.lock`, and `vendor/` for PHP runtimes;
 - `public/`;
 - runtime directories such as `src/`, `templates/`, `config/`, `bootstrap/`, `routes/`, `resources/`, or `storage/`.
 

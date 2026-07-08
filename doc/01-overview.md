@@ -2,7 +2,7 @@
 
 Navigation: [README](README.md) | [Next: Workspace Layout](02-workspace-layout.md)
 
-BabelChrome is a macOS browser workspace built around a native CEF-based application and an installable module system. The current implemented module runtimes are PHP runtimes, but the module contract is intended to stay runtime-aware rather than PHP-only.
+BabelChrome is a macOS browser workspace built around a native CEF-based application and an installable module system. The current implemented module runtimes are `php-web`, `php-class`, and `static-web`, and the module contract is intended to stay runtime-aware rather than PHP-only.
 
 The browser provides the native shell, tab model, groups, address bar, local service host, module installation UI, stable `babelchrome://` routes, and runtime integration with macOS. Modules provide optional capabilities such as Markdown rendering, OpenAPI rendering, JSON rendering, local project launching, and framework integration examples.
 
@@ -27,7 +27,7 @@ The ExtensionHost is currently implemented in PHP and embedded in the browser re
 
 ### Modules
 
-Modules are independent extension projects shipped as zip packages. Today, the implemented runtime handlers support PHP modules such as Symfony apps, Laravel apps, plain PHP front controllers, and PHP class entrypoints. The manifest contract is runtime-aware so future handlers can support non-PHP module layouts without changing the native browser contract.
+Modules are independent extension projects shipped as zip packages. Today, the implemented runtime handlers support PHP modules such as Symfony apps, Laravel apps, plain PHP front controllers, PHP class entrypoints, and static web modules that need no PHP entrypoint. The manifest contract is runtime-aware so future handlers can support additional non-PHP module layouts without changing the native browser contract.
 
 ### Libraries
 

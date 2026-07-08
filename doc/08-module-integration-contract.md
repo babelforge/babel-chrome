@@ -29,14 +29,37 @@ Each module is discovered from its root `manifest.json`. The important public fi
 The module contract is runtime-aware. The currently implemented runtimes are:
 
 - `php-web`, which executes a PHP front controller such as `public/index.php`;
-- `php-class`, which executes a PHP class implementing `BabelChromeModuleInterface`.
+- `php-class`, which executes a PHP class implementing `BabelChromeModuleInterface`;
+- `static-web`, which serves a static document root without PHP module code.
 
 Legacy manifests remain accepted:
 
 - `web` is normalized to `php-web`;
 - `class` or a missing runtime is normalized to `php-class`.
 
-Future runtime families such as `static-web`, `process-web`, and `process-runtime` are planned but not implemented yet. Documentation should not describe them as available until the ExtensionHost supports them.
+Future runtime families such as `process-web` and `process-runtime` are planned but not implemented yet. Documentation should not describe them as available until the ExtensionHost supports them.
+
+A static web module declares a document root and an index file:
+
+```json
+{
+  "runtime": {
+    "type": "static-web",
+    "documentRoot": "public",
+    "index": "index.html"
+  }
+}
+```
+
+`static-web` modules do not need a PHP entrypoint, Composer vendor directory, or `requirements.php`. BabelChrome serves the declared index file through the same stable module routes as other modules. Public assets are still served from the module `public/` directory through tokenized `/module/<id>/assets/...` URLs.
+
+Static text documents can use request-scoped placeholders:
+
+```html
+<link rel="stylesheet" href="{{ BABELCHROME_MODULE_ASSET_BASE_URL }}/app.css{{ BABELCHROME_MODULE_ASSET_TOKEN_QUERY }}">
+```
+
+Supported placeholders include `BABELCHROME_MODULE_ID`, `BABELCHROME_MODULE_NAME`, `BABELCHROME_MODULE_VERSION`, `BABELCHROME_MODULE_ROUTE`, `BABELCHROME_MODULE_ASSET_BASE_URL`, `BABELCHROME_MODULE_ASSET_TOKEN_QUERY`, `BABELCHROME_LOCAL_SERVICE_BASE_URL`, `BABELCHROME_LOCAL_SERVICE_TOKEN`, and `BABELCHROME_SOURCE_URL`.
 
 ## Readiness And Setup
 
