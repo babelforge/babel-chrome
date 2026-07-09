@@ -43,7 +43,7 @@ It should not directly own browser, library, or module implementation files afte
 - CEF/AppKit integration;
 - the ExtensionHost PHP runtime;
 - native URL dispatching;
-- native module registry, installer, runtime metadata parsing, install/update/remove UI, and enable/disable state;
+- native module registry, installer, process-web runtime actions, install/update/remove UI, and enable/disable state;
 - local protocols such as `babelchrome://viewer/...` and `babelchrome://server/...`.
 
 The detailed native source layout is documented in [Browser Source Layout](../browser/doc/07-browser-source-layout.md). The browser keeps responsibilities split between app lifecycle, CEF integration, window orchestration, UI controls, services, storage, and theme support.
