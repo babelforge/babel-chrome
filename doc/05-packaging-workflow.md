@@ -28,22 +28,26 @@ browser/tools/build-php-modules.sh
 
 The shipper copies the module into a temporary build directory, prepares runtime dependencies when the module type needs them, compiles Symfony AssetMapper assets when available, installs Composer dependencies without dev packages for PHP modules, and creates a zip in `zip/`.
 
-Runtime packages keep the files needed to execute the module:
+Runtime packages keep the files needed to execute the module for its declared runtime:
 
 - `manifest.json`;
-- `composer.json`, `composer.lock`, and `vendor/` for PHP runtimes;
+- `composer.json`, `composer.lock`, and `vendor/` when the runtime needs Composer;
 - `public/`;
-- runtime directories such as `src/`, `templates/`, `config/`, `bootstrap/`, `routes/`, `resources/`, or `storage/`.
+- PHP framework directories such as `src/`, `templates/`, `config/`, `bootstrap`, `routes`, `resources`, `storage`, or `database`;
+- static web documents for `static-web` runtimes;
+- executable scripts, compiled assets, and module-owned production dependencies for `process-web` and `process-runtime` runtimes.
 
 Runtime packages exclude development-only paths such as:
 
 - `tests/`;
-- `var/`;
+- `var/`, except when the declared process runtime uses it as a module-owned runtime directory;
 - `ai/`;
 - `.git/`;
 - `build/`;
 - `coverage/`;
-- `node_modules/`.
+- `node_modules/`, except when the declared process runtime needs it as a production runtime dependency.
+
+The shipper should not assume that every module is a PHP project. PHP runtimes ship Composer production dependencies, static web runtimes ship static public files, and process runtimes ship the executable files and production dependencies required by their command contract.
 
 ## Validation
 
