@@ -416,7 +416,7 @@ BabelChrome internal pages use an explicit opt-in convention for button-like lin
 <a class="smallButton" data-can-open-menu="true" href="babelchrome://modules">Back to modules</a>
 ```
 
-Button-like controls do not expose the link context menu by default. Controls that are safe navigation targets, such as `Details`, `Settings`, `Back`, `PHP Modules`, or `Check Updates`, opt in with `data-can-open-menu="true"`.
+Button-like controls do not expose the link context menu by default. Controls that are safe navigation targets, such as `Details`, `Settings`, `Back`, `Modules`, or `Check Updates`, opt in with `data-can-open-menu="true"`.
 
 Destructive or state-changing actions such as `Remove`, `Disable`, `Enable`, `Install`, `Restart`, and `Set update source` should not opt in.
 
