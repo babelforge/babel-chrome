@@ -4,7 +4,7 @@ Navigation: [README](README.md) | [Next: Workspace Layout](02-workspace-layout.m
 
 BabelChrome is a macOS browser workspace built around a native CEF-based application and an installable module system. The public module contract is language-agnostic and is centered on `static-web`, `process-web`, and `process-runtime` runtimes.
 
-The browser provides the native shell, tab model, groups, address bar, local service host, module installation UI, stable `babelchrome://` routes, and runtime integration with macOS. Modules provide optional capabilities such as Markdown rendering, OpenAPI rendering, JSON rendering, local project launching, and framework integration examples.
+The browser provides the native shell, tab model, groups, address bar, native module registry and installer, local service host, stable `babelchrome://` routes, and runtime integration with macOS. Modules provide optional capabilities such as Markdown rendering, OpenAPI rendering, JSON rendering, local project launching, and framework integration examples.
 
 The meta workspace keeps those responsibilities separated:
 
@@ -19,11 +19,11 @@ This split keeps BabelChrome extensible without turning the browser repository i
 
 ### Browser
 
-The browser is the native app. It owns user-facing navigation, CEF integration, local protocols, module installation, and extension host lifecycle.
+The browser is the native app. It owns user-facing navigation, CEF integration, local protocols, module discovery, module installation, module enable/disable/remove state, and extension host lifecycle.
 
 ### Extension Host
 
-The ExtensionHost is currently implemented in PHP and embedded in the browser resources. It discovers installed modules, dispatches module routes through supported runtime handlers, exposes internal APIs, and bridges module behavior back to the native shell.
+The ExtensionHost is currently implemented in PHP and embedded in the browser resources. It dispatches module routes through supported runtime handlers, exposes internal APIs, and bridges module behavior back to the native shell. It is no longer the owner of installed-module discovery or install/remove/enable/disable state.
 
 ### Modules
 
