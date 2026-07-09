@@ -12,6 +12,7 @@ Each module is discovered from its root `manifest.json`. The important public fi
 - `runtime.type` and `runtime.entrypoint`;
 - `runtime.processIsolation` when a module needs a dedicated PHP process;
 - `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.readyUrl`, `runtime.timeoutMs`, and `runtime.stop` for `process-web` modules;
+- `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.timeoutMs`, `runtime.mode`, `runtime.commands`, and `runtime.stop` for `process-runtime` modules;
 - `readiness` for optional read-only readiness checks;
 - `setup` for optional user-confirmed setup commands;
 - `routes` for stable `babelchrome://` URLs;
@@ -32,14 +33,13 @@ The module contract is runtime-aware. The currently implemented runtimes are:
 - `php-web`, which executes a PHP front controller such as `public/index.php`;
 - `php-class`, which executes a PHP class implementing `BabelChromeModuleInterface`;
 - `static-web`, which serves a static document root without PHP module code;
-- `process-web`, which starts a module-owned local HTTP server on a BabelChrome-assigned port and proxies module routes to it.
+- `process-web`, which starts a module-owned local HTTP server on a BabelChrome-assigned port and proxies module routes to it;
+- `process-runtime`, which starts or invokes a module-owned process without implying any HTTP server.
 
 Legacy manifests remain accepted:
 
 - `web` is normalized to `php-web`;
 - `class` or a missing runtime is normalized to `php-class`.
-
-`process-runtime`, for non-HTTP process actions, is planned but not implemented yet. Documentation should not describe it as available until the ExtensionHost supports it.
 
 A static web module declares a document root and an index file:
 
@@ -102,6 +102,76 @@ X-BabelChrome-File-Types
 ```
 
 The request query is proxied except for the ExtensionHost `token`. On module disable, remove, update, or `app.will-quit`, BabelChrome stops running process-web instances.
+
+A process runtime module declares a non-web command contract:
+
+```json
+{
+  "runtime": {
+    "type": "process-runtime",
+    "mode": "on-demand",
+    "command": "node",
+    "args": ["worker/index.js", "{{ route }}"],
+    "cwd": ".",
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "timeoutMs": 10000,
+    "commands": {
+      "lifecycle": {
+        "command": "node",
+        "args": ["worker/lifecycle.js", "{{ hook }}"]
+      }
+    },
+    "stop": {
+      "signal": "TERM",
+      "timeoutMs": 3000
+    }
+  }
+}
+```
+
+Supported modes are:
+
+- `on-demand`, which starts a fresh process for each declared module route or hook route;
+- `long-running`, which starts and keeps a process alive until the module is disabled, removed, updated, or BabelChrome quits.
+
+`process-runtime` modules do not need a PHP entrypoint, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, and `env`: `{{ moduleId }}`, `{{ moduleDir }}`, `{{ route }}`, `{{ hook }}`, and `{{ sourceUrl }}`.
+
+For on-demand execution, BabelChrome writes a JSON payload to stdin:
+
+```json
+{
+  "module": {
+    "id": "vendor.module",
+    "name": "Vendor Module",
+    "version": "1.0.0",
+    "path": "/path/to/installed/module"
+  },
+  "route": "index",
+  "hook": "app.did-start",
+  "sourceUrl": "https://example.com/source",
+  "localServiceBaseUrl": "http://127.0.0.1:61000",
+  "query": {
+    "name": "value"
+  },
+  "fileTypes": "md,json"
+}
+```
+
+The process may return plain stdout, which BabelChrome serves as `text/plain`, or JSON stdout:
+
+```json
+{
+  "statusCode": 200,
+  "contentType": "application/json; charset=utf-8",
+  "body": {
+    "ok": true
+  }
+}
+```
+
+If the command exits non-zero or times out, BabelChrome surfaces stdout and stderr in the module error page. A process-runtime module does not expose a browser route unless it explicitly declares one in `routes`. Lifecycle hooks target the runtime through the declared route used by the host, currently `lifecycle` for `app.did-start` and `app.will-quit`.
 
 ## Readiness And Setup
 

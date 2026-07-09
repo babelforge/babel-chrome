@@ -8,7 +8,7 @@ The technical module contract is documented separately in [Module Integration Co
 
 ## Source Ownership
 
-Modules are independent extension projects. The meta workspace references them under `modules/`, but each module owns its own source tree, dependencies, assets, tests, documentation, and release version. The current maintained modules are PHP projects, and BabelChrome also supports static web modules through the `static-web` runtime and local HTTP process modules through the `process-web` runtime.
+Modules are independent extension projects. The meta workspace references them under `modules/`, but each module owns its own source tree, dependencies, assets, tests, documentation, and release version. The current maintained modules are PHP projects, and BabelChrome also supports static web modules through the `static-web` runtime, local HTTP process modules through the `process-web` runtime, and non-web process modules through the `process-runtime` runtime.
 
 Current module sources:
 
@@ -54,7 +54,7 @@ babelchrome://modules
 
 Then use `Install or update module zip` and select one or more generated zip files.
 
-Installing a zip whose module id is already present updates the installed module. The module remains independent from the native app bundle. PHP modules keep their own Composer vendor directory; static web and process-web modules do not need one. Process-web modules may ship their own non-PHP runtime dependencies, because the host treats those packages as module-owned files.
+Installing a zip whose module id is already present updates the installed module. The module remains independent from the native app bundle. PHP modules keep their own Composer vendor directory; static web, process-web, and process-runtime modules do not need one. Process-backed modules may ship their own non-PHP runtime dependencies, because the host treats those packages as module-owned files.
 
 ## Update Checks
 
