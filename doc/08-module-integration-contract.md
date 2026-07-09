@@ -8,9 +8,9 @@ This page is the canonical contract for the integration features that modules ca
 
 Each module is discovered from its root `manifest.json`. The important public fields are:
 
-- `id`, `name`, `version`, `description`, and `requirements` metadata such as `{ "php": ">=8.4" }`;
-- `runtime.type` and `runtime.entrypoint`;
-- `runtime.processIsolation` when a module needs a dedicated PHP process;
+- `id`, `name`, `version`, `description`, and `requirements` metadata such as `{ "php": ">=8.4" }` or `{ "node": ">=22" }`;
+- `runtime.type`;
+- `runtime.documentRoot` and `runtime.index` for `static-web` modules;
 - `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.readyUrl`, `runtime.timeoutMs`, and `runtime.stop` for `process-web` modules;
 - `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.timeoutMs`, `runtime.mode`, `runtime.commands`, and `runtime.stop` for `process-runtime` modules;
 - `readiness` for optional read-only readiness checks;
@@ -28,18 +28,13 @@ Each module is discovered from its root `manifest.json`. The important public fi
 
 ## Runtime Types
 
-The module contract is runtime-aware. The currently implemented runtimes are:
+The supported module runtimes are:
 
-- `php-web`, which executes a PHP front controller such as `public/index.php`;
-- `php-class`, which executes a PHP class implementing `BabelChromeModuleInterface`;
-- `static-web`, which serves a static document root without PHP module code;
+- `static-web`, which serves a static document root without any module-owned process;
 - `process-web`, which starts a module-owned local HTTP server on a BabelChrome-assigned port and proxies module routes to it;
 - `process-runtime`, which starts or invokes a module-owned process without implying any HTTP server.
 
-Legacy manifests remain accepted:
-
-- `web` is normalized to `php-web`;
-- `class` or a missing runtime is normalized to `php-class`.
+PHP is not a browser-level runtime in the public contract. A Symfony, Laravel, or plain PHP module should declare `process-web` and start its own PHP front controller with the PHP executable it requires. Older `php-web`, `php-class`, `web`, or implicit-class manifests are not part of the fresh module platform and must be rebuilt.
 
 A static web module declares a document root and an index file:
 
@@ -53,7 +48,7 @@ A static web module declares a document root and an index file:
 }
 ```
 
-`static-web` modules do not need a PHP entrypoint, Composer vendor directory, or `requirements.php`. BabelChrome serves the declared index file through the same stable module routes as other modules. Public assets are still served from the module `public/` directory through tokenized `/module/<id>/assets/...` URLs.
+`static-web` modules do not need a process command, Composer vendor directory, or `requirements.php`. BabelChrome serves the declared index file through the same stable module routes as other modules. Public assets are still served from the module `public/` directory through tokenized `/module/<id>/assets/...` URLs.
 
 Static text documents can use request-scoped placeholders:
 
@@ -85,7 +80,7 @@ A process web module declares how BabelChrome starts its local HTTP server:
 }
 ```
 
-`process-web` modules do not need a PHP entrypoint, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, `env`, and `readyUrl`: `{{ port }}`, `{{ moduleId }}`, and `{{ moduleDir }}`.
+`process-web` modules do not need a browser-owned PHP adapter, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, `env`, and `readyUrl`: `{{ port }}`, `{{ moduleId }}`, and `{{ moduleDir }}`.
 
 BabelChrome assigns the port at runtime. The process port is an implementation detail and must not appear in stable user-facing URLs. Callers should continue to use the declared `babelchrome://` route, and the ExtensionHost rebuilds the runtime URL after app restart.
 
@@ -151,7 +146,7 @@ Supported modes are:
 - `on-demand`, which starts a fresh process for each declared module route or hook route;
 - `long-running`, which starts and keeps a process alive until the module is disabled, removed, updated, or BabelChrome quits.
 
-`process-runtime` modules do not need a PHP entrypoint, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, and `env`: `{{ moduleId }}`, `{{ moduleDir }}`, `{{ route }}`, `{{ hook }}`, and `{{ sourceUrl }}`.
+`process-runtime` modules do not need a browser-owned PHP adapter, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, and `env`: `{{ moduleId }}`, `{{ moduleDir }}`, `{{ route }}`, `{{ hook }}`, and `{{ sourceUrl }}`.
 
 For on-demand execution, BabelChrome writes a JSON payload to stdin:
 

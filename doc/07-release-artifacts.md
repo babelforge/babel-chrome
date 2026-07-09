@@ -18,7 +18,7 @@ Module artifacts are production zips generated from `modules/*` with:
 ./tools/dev2prod.sh
 ```
 
-Each zip contains the runtime files for one module. PHP modules include their own Composer production dependencies; static web modules can ship only their manifest and public files. The zip is installed from `babelchrome://modules`.
+Each zip contains the runtime files for one module. Composer-based modules include their own Composer production dependencies; static web modules can ship only their manifest and public files. The zip is installed from `babelchrome://modules`.
 
 Before publishing module artifacts, run:
 

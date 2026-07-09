@@ -2,7 +2,7 @@
 
 Navigation: [Previous: Module Operations](04-module-operations.md) | [README](README.md) | [Next: Maintenance Guide](06-maintenance-guide.md)
 
-Production modules are generated from development module sources. The meta workspace owns the packaging orchestration, but each module owns its own source, assets, tests, dependencies, and release version. PHP modules also own their Composer lock.
+Production modules are generated from development module sources. The meta workspace owns the packaging orchestration, but each module owns its own source, assets, tests, dependencies, and release version. Modules that use Composer own their Composer lock.
 
 ## Build One Module
 
@@ -18,7 +18,7 @@ The argument may be either the module directory name or the manifest id.
 ./tools/dev2prod.sh
 ```
 
-The browser repository also exposes a wrapper:
+The browser repository also exposes a historical wrapper:
 
 ```bash
 browser/tools/build-php-modules.sh
@@ -26,7 +26,7 @@ browser/tools/build-php-modules.sh
 
 ## Production Package Contents
 
-The shipper copies the module into a temporary build directory, prepares runtime dependencies when the module type needs them, compiles Symfony AssetMapper assets when available, installs Composer dependencies without dev packages for PHP modules, and creates a zip in `zip/`.
+The shipper copies the module into a temporary build directory, prepares runtime dependencies when the module type needs them, compiles Symfony AssetMapper assets when available, installs Composer dependencies without dev packages when Composer is present, and creates a zip in `zip/`.
 
 Runtime packages keep the files needed to execute the module for its declared runtime:
 
@@ -47,7 +47,7 @@ Runtime packages exclude development-only paths such as:
 - `coverage/`;
 - `node_modules/`, except when the declared process runtime needs it as a production runtime dependency.
 
-The shipper should not assume that every module is a PHP project. PHP runtimes ship Composer production dependencies, static web runtimes ship static public files, and process runtimes ship the executable files and production dependencies required by their command contract.
+The shipper should not assume that every module is a PHP project. Composer-based modules ship Composer production dependencies, static web runtimes ship static public files, and process runtimes ship the executable files and production dependencies required by their command contract.
 
 ## Validation
 
