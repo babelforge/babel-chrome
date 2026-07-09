@@ -103,6 +103,20 @@ X-BabelChrome-File-Types
 
 The request query is proxied except for the ExtensionHost `token`. On module disable, remove, update, or `app.will-quit`, BabelChrome stops running process-web instances.
 
+The module details page exposes process runtime diagnostics from the host. For `process-web`, diagnostics include state, running flag, assigned port, process base URL, readiness URL, command, working directory, and captured logs. A `Restart runtime` action is available for `process-web` modules; it stops any current process, starts a new one, waits for readiness, and returns the refreshed runtime status. The internal endpoint is:
+
+```text
+/internal/modules/runtime-restart?moduleId=<module-id>
+```
+
+Runtime status can be read without starting a stopped process:
+
+```text
+/internal/modules/runtime-status?moduleId=<module-id>
+```
+
+For `process-runtime`, diagnostics expose the runtime mode, state, command, working directory, and captured logs for long-running instances. On-demand process-runtime modules usually report `idle`, because no persistent process is expected between requests.
+
 A process runtime module declares a non-web command contract:
 
 ```json
