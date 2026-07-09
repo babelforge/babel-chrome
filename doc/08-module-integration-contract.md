@@ -11,6 +11,7 @@ Each module is discovered from its root `manifest.json`. The important public fi
 - `id`, `name`, `version`, `description`, and `requirements` metadata such as `{ "php": ">=8.4" }`;
 - `runtime.type` and `runtime.entrypoint`;
 - `runtime.processIsolation` when a module needs a dedicated PHP process;
+- `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.readyUrl`, `runtime.timeoutMs`, and `runtime.stop` for `process-web` modules;
 - `readiness` for optional read-only readiness checks;
 - `setup` for optional user-confirmed setup commands;
 - `routes` for stable `babelchrome://` URLs;
@@ -30,14 +31,15 @@ The module contract is runtime-aware. The currently implemented runtimes are:
 
 - `php-web`, which executes a PHP front controller such as `public/index.php`;
 - `php-class`, which executes a PHP class implementing `BabelChromeModuleInterface`;
-- `static-web`, which serves a static document root without PHP module code.
+- `static-web`, which serves a static document root without PHP module code;
+- `process-web`, which starts a module-owned local HTTP server on a BabelChrome-assigned port and proxies module routes to it.
 
 Legacy manifests remain accepted:
 
 - `web` is normalized to `php-web`;
 - `class` or a missing runtime is normalized to `php-class`.
 
-Future runtime families such as `process-web` and `process-runtime` are planned but not implemented yet. Documentation should not describe them as available until the ExtensionHost supports them.
+`process-runtime`, for non-HTTP process actions, is planned but not implemented yet. Documentation should not describe it as available until the ExtensionHost supports it.
 
 A static web module declares a document root and an index file:
 
@@ -60,6 +62,46 @@ Static text documents can use request-scoped placeholders:
 ```
 
 Supported placeholders include `BABELCHROME_MODULE_ID`, `BABELCHROME_MODULE_NAME`, `BABELCHROME_MODULE_VERSION`, `BABELCHROME_MODULE_ROUTE`, `BABELCHROME_MODULE_ASSET_BASE_URL`, `BABELCHROME_MODULE_ASSET_TOKEN_QUERY`, `BABELCHROME_LOCAL_SERVICE_BASE_URL`, `BABELCHROME_LOCAL_SERVICE_TOKEN`, and `BABELCHROME_SOURCE_URL`.
+
+A process web module declares how BabelChrome starts its local HTTP server:
+
+```json
+{
+  "runtime": {
+    "type": "process-web",
+    "command": "node",
+    "args": ["server/index.js", "--port={{ port }}"],
+    "cwd": ".",
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "readyUrl": "http://127.0.0.1:{{ port }}/health",
+    "timeoutMs": 10000,
+    "stop": {
+      "signal": "TERM",
+      "timeoutMs": 3000
+    }
+  }
+}
+```
+
+`process-web` modules do not need a PHP entrypoint, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, `env`, and `readyUrl`: `{{ port }}`, `{{ moduleId }}`, and `{{ moduleDir }}`.
+
+BabelChrome assigns the port at runtime. The process port is an implementation detail and must not appear in stable user-facing URLs. Callers should continue to use the declared `babelchrome://` route, and the ExtensionHost rebuilds the runtime URL after app restart.
+
+When BabelChrome proxies a route to the process, it forwards BabelChrome context with HTTP headers:
+
+```text
+X-BabelChrome-Module-Id
+X-BabelChrome-Module-Route
+X-BabelChrome-Source-Url
+X-BabelChrome-Local-Service-Base-Url
+X-BabelChrome-Local-Service-Token
+X-BabelChrome-Module-Asset-Base-Url
+X-BabelChrome-File-Types
+```
+
+The request query is proxied except for the ExtensionHost `token`. On module disable, remove, update, or `app.will-quit`, BabelChrome stops running process-web instances.
 
 ## Readiness And Setup
 
