@@ -13,7 +13,7 @@ Usage:
   ./tools/check-workspace.sh [--quick|--full] [--skip-install] [--skip-package]
 
 Modes:
-  --quick  Validate ExtensionHost, Markdown viewer, Demo module, process runtime smoke tests, and focused packaging.
+  --quick  Validate ExtensionHost, Markdown viewer, Demo module, process runtime/process web smoke tests, and focused packaging.
   --full   Validate ExtensionHost, every module with a Composer QA script, every module smoke test, and all packaging.
 
 Options:
@@ -130,6 +130,8 @@ package_modules() {
   "${PROJECT_DIR}/tools/dev2prod.sh" babelforge.demo-module
   echo "Building Process Runtime Demo module zip"
   "${PROJECT_DIR}/tools/dev2prod.sh" babelforge.process-runtime-demo
+  echo "Building Process Web Demo module zip"
+  "${PROJECT_DIR}/tools/dev2prod.sh" babelforge.process-web-demo
 }
 
 smoke_test_scripts() {
@@ -146,6 +148,9 @@ smoke_test_scripts() {
 
   if [[ -x "${PROJECT_DIR}/modules/process-runtime-demo-module/tests/runtime-smoke.sh" ]]; then
     printf '%s\n' "${PROJECT_DIR}/modules/process-runtime-demo-module/tests/runtime-smoke.sh"
+  fi
+  if [[ -x "${PROJECT_DIR}/modules/process-web-demo-module/tests/process-web-smoke.sh" ]]; then
+    printf '%s\n' "${PROJECT_DIR}/modules/process-web-demo-module/tests/process-web-smoke.sh"
   fi
 }
 

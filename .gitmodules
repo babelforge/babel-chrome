@@ -38,3 +38,7 @@
 	path = modules/process-runtime-demo-module
 	url = https://github.com/babelforge/babelchrome-process-runtime-demo-module.git
 	branch = main
+[submodule "modules/process-web-demo-module"]
+	path = modules/process-web-demo-module
+	url = https://github.com/babelforge/babelchrome-process-web-demo-module.git
+	branch = main

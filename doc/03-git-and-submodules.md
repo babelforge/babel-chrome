@@ -18,6 +18,7 @@ babelforge/babelchrome-openapi-viewer-module
 babelforge/babelchrome-plain-php-module
 babelforge/babelchrome-project-launcher-module
 babelforge/babelchrome-process-runtime-demo-module
+babelforge/babelchrome-process-web-demo-module
 ```
 
 ## Clone Workflow

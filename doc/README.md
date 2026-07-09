@@ -37,6 +37,7 @@ babel-chrome/
     plain-php-module/
     project-launcher-module/
     process-runtime-demo-module/
+    process-web-demo-module/
   tools/
     dev2prod.sh
   zip/
