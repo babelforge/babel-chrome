@@ -82,7 +82,7 @@ A process web module declares how BabelChrome starts its local HTTP server:
 
 `process-web` modules do not need a browser-owned PHP adapter, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, `env`, and `readyUrl`: `{{ port }}`, `{{ moduleId }}`, and `{{ moduleDir }}`.
 
-BabelChrome assigns the port at runtime. The process port is an implementation detail and must not appear in stable user-facing URLs. Callers should continue to use the declared `babelchrome://` route, and the ExtensionHost rebuilds the runtime URL after app restart.
+BabelChrome assigns the port at runtime. The process port is an implementation detail and must not appear in stable user-facing URLs. Callers should continue to use the declared `babelchrome://` route, and the native host rebuilds the runtime URL after app restart.
 
 When BabelChrome proxies a route to the process, it forwards BabelChrome context with HTTP headers:
 
@@ -258,7 +258,7 @@ Modules expose stable URLs through `routes`:
 }
 ```
 
-Opening `babelchrome://project-launcher` asks BabelChrome to dispatch the route to the installed module. The tokenized local HTTP URL is an implementation detail of the ExtensionHost and should not be stored by callers.
+Opening `babelchrome://project-launcher` asks BabelChrome to dispatch the route to the installed module. The tokenized local HTTP URL is an implementation detail of the native host and should not be stored by callers.
 
 The Project Launcher also exposes stable server URLs such as:
 
@@ -329,7 +329,7 @@ When this route exists, `babelchrome://modules` shows a `Settings` action for th
 
 ## Open With Integration
 
-Viewer modules can use BabelChrome's module-agnostic open-with endpoints for local files:
+Viewer modules can use BabelChrome's native module-agnostic open-with endpoints for local files:
 
 ```text
 GET  /internal/open-with/list/<extension>
