@@ -103,10 +103,11 @@ X-BabelChrome-File-Types
 
 The request query is proxied except for the ExtensionHost `token`. On module disable, remove, update, or `app.will-quit`, BabelChrome stops running process-web instances.
 
-The module details page exposes process runtime diagnostics from the host. For `process-web`, diagnostics include state, running flag, assigned port, process base URL, readiness URL, command, working directory, and captured logs. A `Restart runtime` action is available for `process-web` modules; it stops any current process, starts a new one, waits for readiness, and returns the refreshed runtime status. The internal endpoint is:
+The modules page shows compact status badges for enabled state, readiness, and runtime state. The module details page exposes process runtime diagnostics from the host. For `process-web`, diagnostics include state, running flag, assigned port, process base URL, readiness URL, command, working directory, and captured logs. `Start runtime`, `Restart runtime`, and `Stop runtime` actions are shown when they match the current process state. Restart stops any current process, starts a new one, waits for readiness, and returns the refreshed runtime status. The internal endpoints are:
 
 ```text
 /internal/modules/runtime-restart?moduleId=<module-id>
+/internal/modules/runtime-stop?moduleId=<module-id>
 ```
 
 Runtime status can be read without starting a stopped process:
@@ -210,6 +211,12 @@ Readiness commands are intended to be read-only, idempotent, and fast. The Exten
   "messages": ["Node.js >= 22 is required"],
   "canSetup": true
 }
+```
+
+Modules that declare readiness expose a `Check readiness` action on their details page. The action returns the same status shape as the module snapshot:
+
+```text
+/internal/modules/readiness-status?moduleId=<module-id>
 ```
 
 Modules may also declare an optional setup command:
