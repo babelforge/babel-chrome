@@ -4,7 +4,7 @@ Navigation: [README](README.md) | [Next: Workspace Layout](02-workspace-layout.m
 
 BabelChrome is a macOS browser workspace built around a native CEF-based application and an installable module system. The public module contract is language-agnostic and is centered on `static-web`, `process-web`, and `process-runtime` runtimes.
 
-The browser provides the native shell, tab model, groups, address bar, native module registry and installer, local service host, stable `babelchrome://` routes, and runtime integration with macOS. Modules provide optional capabilities such as Markdown rendering, OpenAPI rendering, JSON rendering, local project launching, and framework integration examples.
+The browser provides the native shell, tab model, groups, address bar, native module registry and installer, native runtime metadata parsing, local service host, stable `babelchrome://` routes, and runtime integration with macOS. Modules provide optional capabilities such as Markdown rendering, OpenAPI rendering, JSON rendering, local project launching, and framework integration examples.
 
 The meta workspace keeps those responsibilities separated:
 
