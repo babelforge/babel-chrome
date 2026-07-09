@@ -16,6 +16,7 @@ Current module sources:
 - `babelforge.json-viewer`;
 - `babelforge.laravel-module`;
 - `babelforge.markdown-viewer`;
+- `babelforge.node-process-web-demo`;
 - `babelforge.openapi-viewer`;
 - `babelforge.plain-php-module`;
 - `babelforge.project-launcher`;

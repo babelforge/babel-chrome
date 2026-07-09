@@ -22,6 +22,10 @@
 	path = modules/markdown-viewer-module
 	url = https://github.com/babelforge/babelchrome-markdown-viewer-module.git
 	branch = main
+[submodule "modules/node-process-web-demo-module"]
+	path = modules/node-process-web-demo-module
+	url = https://github.com/babelforge/babelchrome-node-process-web-demo-module.git
+	branch = main
 [submodule "modules/openapi-viewer-module"]
 	path = modules/openapi-viewer-module
 	url = https://github.com/babelforge/babelchrome-openapi-viewer-module.git

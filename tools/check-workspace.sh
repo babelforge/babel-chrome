@@ -132,6 +132,8 @@ package_modules() {
   "${PROJECT_DIR}/tools/dev2prod.sh" babelforge.process-runtime-demo
   echo "Building Process Web Demo module zip"
   "${PROJECT_DIR}/tools/dev2prod.sh" babelforge.process-web-demo
+  echo "Building Node Process Web Demo module zip"
+  "${PROJECT_DIR}/tools/dev2prod.sh" babelforge.node-process-web-demo
 }
 
 smoke_test_scripts() {
@@ -151,6 +153,9 @@ smoke_test_scripts() {
   fi
   if [[ -x "${PROJECT_DIR}/modules/process-web-demo-module/tests/process-web-smoke.sh" ]]; then
     printf '%s\n' "${PROJECT_DIR}/modules/process-web-demo-module/tests/process-web-smoke.sh"
+  fi
+  if [[ -x "${PROJECT_DIR}/modules/node-process-web-demo-module/tests/node-process-web-smoke.sh" ]]; then
+    printf '%s\n' "${PROJECT_DIR}/modules/node-process-web-demo-module/tests/node-process-web-smoke.sh"
   fi
 }
 

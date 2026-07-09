@@ -14,6 +14,7 @@ babelforge/babelchrome-demo-module
 babelforge/babelchrome-json-viewer-module
 babelforge/babelchrome-laravel-module
 babelforge/babelchrome-markdown-viewer-module
+babelforge/babelchrome-node-process-web-demo-module
 babelforge/babelchrome-openapi-viewer-module
 babelforge/babelchrome-plain-php-module
 babelforge/babelchrome-project-launcher-module

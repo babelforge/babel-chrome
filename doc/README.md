@@ -33,6 +33,7 @@ babel-chrome/
     json-viewer-module/
     laravel-module/
     markdown-viewer-module/
+    node-process-web-demo-module/
     openapi-viewer-module/
     plain-php-module/
     project-launcher-module/
