@@ -36,6 +36,7 @@ babel-chrome/
     openapi-viewer-module/
     plain-php-module/
     project-launcher-module/
+    process-runtime-demo-module/
   tools/
     dev2prod.sh
   zip/

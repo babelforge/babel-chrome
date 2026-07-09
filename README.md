@@ -6,7 +6,7 @@ It coordinates:
 
 - the native macOS CEF browser application;
 - shared libraries used by BabelChrome modules;
-- installable PHP modules;
+- installable modules;
 - module packaging tools;
 - root documentation for workspace and release workflows.
 

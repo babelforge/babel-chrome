@@ -18,7 +18,8 @@ Current module sources:
 - `babelforge.markdown-viewer`;
 - `babelforge.openapi-viewer`;
 - `babelforge.plain-php-module`;
-- `babelforge.project-launcher`.
+- `babelforge.project-launcher`;
+- `babelforge.process-runtime-demo`.
 
 The browser does not load those development directories directly. A module becomes available to BabelChrome only after a production zip has been installed from `babelchrome://modules`.
 

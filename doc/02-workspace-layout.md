@@ -17,6 +17,7 @@ babel-chrome/
     openapi-viewer-module/
     plain-php-module/
     project-launcher-module/
+    process-runtime-demo-module/
   tools/
   zip/
   doc/
@@ -54,12 +55,13 @@ The detailed native source layout is documented in [Browser Source Layout](../br
 Each directory under `modules/` is a standalone installable module source project. Each module owns:
 
 - `manifest.json`;
-- `composer.json` and `composer.lock`;
-- its own `vendor/` during development;
-- source code;
+- its runtime-specific source code;
 - tests;
-- source frontend assets when needed;
-- generated `public/assets/` when needed.
+- documentation;
+- release version;
+- `composer.json`, `composer.lock`, and its own `vendor/` only when it is a PHP or Composer-backed module;
+- source frontend assets and generated `public/assets/` when needed;
+- executable runtime files and non-PHP production dependencies when using a process runtime.
 
 Development vendors are intentionally module-local to avoid dependency conflicts.
 

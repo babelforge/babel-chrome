@@ -13,8 +13,8 @@ Usage:
   ./tools/check-workspace.sh [--quick|--full] [--skip-install] [--skip-package]
 
 Modes:
-  --quick  Validate ExtensionHost, Markdown viewer, Demo module, and Demo packaging.
-  --full   Validate ExtensionHost, every module with a Composer QA script, and all packaging.
+  --quick  Validate ExtensionHost, Markdown viewer, Demo module, process runtime smoke tests, and focused packaging.
+  --full   Validate ExtensionHost, every module with a Composer QA script, every module smoke test, and all packaging.
 
 Options:
   --skip-install   Do not run composer install before QA.
@@ -78,6 +78,15 @@ run_composer_qa() {
   composer qa --working-dir="${project_dir}"
 }
 
+run_smoke_test() {
+  local script_path="$1"
+  local project_dir
+
+  project_dir="$(dirname "$(dirname "${script_path}")")"
+  echo "Running smoke test in ${project_dir#${PROJECT_DIR}/}"
+  "${script_path}"
+}
+
 assert_submodules_initialized() {
   local missing_submodules
 
@@ -119,6 +128,25 @@ package_modules() {
 
   echo "Building Demo module zip"
   "${PROJECT_DIR}/tools/dev2prod.sh" babelforge.demo-module
+  echo "Building Process Runtime Demo module zip"
+  "${PROJECT_DIR}/tools/dev2prod.sh" babelforge.process-runtime-demo
+}
+
+smoke_test_scripts() {
+  if [[ "${MODE}" == "full" ]]; then
+    find "${PROJECT_DIR}/modules" -mindepth 3 -maxdepth 3 -path '*/tests/*' -type f -name '*smoke*.sh' \
+      | sort \
+      | while IFS= read -r script_path; do
+        if [[ -x "${script_path}" ]]; then
+          printf '%s\n' "${script_path}"
+        fi
+      done
+    return
+  fi
+
+  if [[ -x "${PROJECT_DIR}/modules/process-runtime-demo-module/tests/runtime-smoke.sh" ]]; then
+    printf '%s\n' "${PROJECT_DIR}/modules/process-runtime-demo-module/tests/runtime-smoke.sh"
+  fi
 }
 
 assert_submodules_initialized
@@ -133,6 +161,10 @@ while IFS= read -r project_dir; do
   run_composer_install "${project_dir}"
   run_composer_qa "${project_dir}"
 done < <("${project_iterator}")
+
+while IFS= read -r script_path; do
+  run_smoke_test "${script_path}"
+done < <(smoke_test_scripts)
 
 package_modules
 
