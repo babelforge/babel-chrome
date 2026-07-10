@@ -32,13 +32,15 @@ Then prepare release metadata:
 ./tools/prepare-module-release.sh
 ```
 
-The release preparation script builds module zips, verifies their presence, writes `zip/SHA256SUMS`, and writes `zip/modules-release-manifest.json`.
+The release preparation script builds module zips, verifies their presence, writes `zip/SHA256SUMS`, and writes `zip/modules-release-manifest.json`. The manifest entry for each module includes its id, name, version, zip name, checksum, source path, zip modification time, and zip size.
 
 For a single module:
 
 ```bash
 ./tools/prepare-module-release.sh --module babelforge.demo-module
 ```
+
+This only limits the module that is checked and rebuilt. `zip/SHA256SUMS` and `zip/modules-release-manifest.json` are always regenerated globally from every current module zip.
 
 ## Module Update Source
 

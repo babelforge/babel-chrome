@@ -98,4 +98,4 @@ For one module:
 ./tools/prepare-module-release.sh --module babelforge.demo-module
 ```
 
-The script writes `zip/SHA256SUMS` and `zip/modules-release-manifest.json`.
+The `--module` option limits the check/build target, but the generated release metadata remains global. Both `tools/dev2prod.sh` and `tools/prepare-module-release.sh` write `zip/SHA256SUMS` and `zip/modules-release-manifest.json` for every current module zip.

@@ -150,3 +150,5 @@ ship_module() {
 while IFS= read -r module_dir; do
   ship_module "${module_dir}"
 done < <(resolve_module_dirs)
+
+php "${PROJECT_DIR}/tools/update-module-release-metadata.php"

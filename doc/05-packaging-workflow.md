@@ -12,6 +12,8 @@ Production modules are generated from development module sources. The meta works
 
 The argument may be either the module directory name or the manifest id.
 
+After each successful build, `tools/dev2prod.sh` regenerates `zip/SHA256SUMS` and `zip/modules-release-manifest.json` for every current module zip. A one-module build therefore updates one zip but keeps the update catalog global.
+
 ## Build Every Module
 
 ```bash
@@ -77,5 +79,13 @@ For release preparation, run the full workspace check:
 ```
 
 This runs QA for every module exposing a Composer `qa` script and builds every module zip.
+
+When only one module needs a release refresh, use:
+
+```bash
+./tools/prepare-module-release.sh --module babelforge.demo-module
+```
+
+This limits the check/build target to that module. The release metadata is still regenerated from all current zips, so update checks keep seeing every available module.
 
 Navigation: [Previous: Module Operations](04-module-operations.md) | [README](README.md) | [Next: Maintenance Guide](06-maintenance-guide.md)
