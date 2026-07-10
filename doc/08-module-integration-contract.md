@@ -11,7 +11,7 @@ Each module is discovered from its root `manifest.json`. The important public fi
 - `id`, `name`, `version`, `description`, and `requirements` metadata such as `{ "php": ">=8.4" }` or `{ "node": ">=22" }`;
 - `runtime.type`;
 - `runtime.documentRoot` and `runtime.index` for `static-web` modules;
-- `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.readyUrl`, `runtime.timeoutMs`, and `runtime.stop` for `process-web` modules;
+- `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.readyUrl`, `runtime.timeoutMs`, `runtime.startPolicy`, and `runtime.stop` for `process-web` modules;
 - `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.timeoutMs`, `runtime.mode`, `runtime.commands`, and `runtime.stop` for `process-runtime` modules;
 - `readiness` for optional read-only readiness checks;
 - `setup` for optional user-confirmed setup commands;
@@ -64,6 +64,7 @@ A process web module declares how BabelChrome starts its local HTTP server:
 {
   "runtime": {
     "type": "process-web",
+    "startPolicy": "lazy",
     "command": "node",
     "args": ["server/index.js", "--port={{ port }}"],
     "cwd": ".",
@@ -84,6 +85,8 @@ A process web module declares how BabelChrome starts its local HTTP server:
 
 BabelChrome assigns the port at runtime. The process port is an implementation detail and must not appear in stable user-facing URLs. Callers should continue to use the declared `babelchrome://` route, and the native host rebuilds the runtime URL after app restart.
 
+`runtime.startPolicy` is optional. The default value is `lazy`, which starts the module process on first route access. A `prewarm` value asks BabelChrome to start the module process before it is needed when possible. During session restore, the module needed by the restored active tab is prewarmed first, before the first browser view is created. Other enabled `prewarm` modules are then started in the background with a serial queue so startup is not flooded by multiple local servers.
+
 When BabelChrome proxies a route to the process, it forwards BabelChrome context with HTTP headers:
 
 ```text
@@ -98,7 +101,7 @@ X-BabelChrome-File-Types
 
 The request query is proxied except for the ExtensionHost `token`. On module disable, remove, update, or `app.will-quit`, BabelChrome stops running process-web instances.
 
-The modules page shows compact status badges for enabled state, readiness, and runtime state. The module details page exposes process runtime diagnostics from the host. For `process-web`, diagnostics include state, running flag, assigned port, process base URL, readiness URL, command, working directory, and captured logs. `Start runtime`, `Restart runtime`, and `Stop runtime` actions are shown when they match the current process state. Restart stops any current process, starts a new one, waits for readiness, and returns the refreshed runtime status. The internal endpoints are:
+The modules page shows compact status badges for enabled state, readiness, and runtime state. The module details page exposes process runtime diagnostics from the host. For `process-web`, diagnostics include state, running flag, start policy, prewarm status when available, assigned port, process base URL, readiness URL, command, working directory, and captured logs. `Start runtime`, `Restart runtime`, and `Stop runtime` actions are shown when they match the current process state. Restart stops any current process, starts a new one, waits for readiness, and returns the refreshed runtime status. The internal endpoints are:
 
 ```text
 /internal/modules/runtime-restart?moduleId=<module-id>
