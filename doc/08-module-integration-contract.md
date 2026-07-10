@@ -13,6 +13,7 @@ Each module is discovered from its root `manifest.json`. The important public fi
 - `runtime.documentRoot` and `runtime.index` for `static-web` modules;
 - `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.readyUrl`, `runtime.timeoutMs`, `runtime.startPolicy`, and `runtime.stop` for `process-web` modules;
 - `runtime.command`, `runtime.args`, `runtime.cwd`, `runtime.env`, `runtime.timeoutMs`, `runtime.mode`, `runtime.commands`, and `runtime.stop` for `process-runtime` modules;
+- `requiredSettings` for host-rendered runtime settings such as executable paths;
 - `readiness` for optional read-only readiness checks;
 - `setup` for optional user-confirmed setup commands;
 - `routes` for stable `babelchrome://` URLs;
@@ -34,7 +35,7 @@ The supported module runtimes are:
 - `process-web`, which starts a module-owned local HTTP server on a BabelChrome-assigned port and proxies module routes to it;
 - `process-runtime`, which starts or invokes a module-owned process without implying any HTTP server.
 
-PHP is not a browser-level runtime in the public contract. A Symfony, Laravel, or plain PHP module should declare `process-web` and start its own PHP front controller with the PHP executable it requires. Older `php-web`, `php-class`, `web`, or implicit-class manifests are not part of the fresh module platform and must be rebuilt.
+PHP is not a browser-level runtime in the public contract. A Symfony, Laravel, or plain PHP module should declare `process-web`, declare the PHP executable through `requiredSettings`, and start its own PHP front controller with the resolved executable. Older `php-web`, `php-class`, `web`, or implicit-class manifests are not part of the fresh module platform and must be rebuilt.
 
 A static web module declares a document root and an index file:
 
@@ -81,7 +82,7 @@ A process web module declares how BabelChrome starts its local HTTP server:
 }
 ```
 
-`process-web` modules do not need a browser-owned PHP adapter, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, `env`, and `readyUrl`: `{{ port }}`, `{{ moduleId }}`, and `{{ moduleDir }}`.
+`process-web` modules do not need a browser-owned PHP adapter, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, `env`, and `readyUrl`: `{{ port }}`, `{{ moduleId }}`, `{{ moduleDir }}`, and `{{ settings.<key> }}` for values resolved from `requiredSettings`.
 
 BabelChrome assigns the port at runtime. The process port is an implementation detail and must not appear in stable user-facing URLs. Callers should continue to use the declared `babelchrome://` route, and the native host rebuilds the runtime URL after app restart.
 
@@ -149,7 +150,7 @@ Supported modes are:
 - `on-demand`, which starts a fresh process for each declared module route or hook route;
 - `long-running`, which starts and keeps a process alive until the module is disabled, removed, updated, or BabelChrome quits.
 
-`process-runtime` modules do not need a browser-owned PHP adapter, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, and `env`: `{{ moduleId }}`, `{{ moduleDir }}`, `{{ route }}`, `{{ hook }}`, and `{{ sourceUrl }}`.
+`process-runtime` modules do not need a browser-owned PHP adapter, Composer vendor directory, or `requirements.php`. The runtime supports these placeholders in `command`, `args`, and `env`: `{{ moduleId }}`, `{{ moduleDir }}`, `{{ route }}`, `{{ hook }}`, `{{ sourceUrl }}`, and `{{ settings.<key> }}` for values resolved from `requiredSettings`.
 
 For on-demand execution, BabelChrome writes a JSON payload to stdin:
 
@@ -186,6 +187,38 @@ The process may return plain stdout, which BabelChrome serves as `text/plain`, o
 
 If the command exits non-zero or times out, BabelChrome surfaces stdout and stderr in the module error page. A process-runtime module does not expose a browser route unless it explicitly declares one in `routes`. Lifecycle hooks target the runtime through the declared route used by the host, currently `lifecycle` for `app.did-start` and `app.will-quit`.
 
+## Required Runtime Settings
+
+Modules may declare host-rendered settings that must be valid before their process runtime can start. This is intended for dependencies that the module cannot render a settings page for by itself, such as the PHP executable needed to start a PHP-backed viewer:
+
+```json
+{
+  "requiredSettings": {
+    "phpPath": {
+      "type": "executable",
+      "label": "PHP executable",
+      "binary": "php",
+      "minVersion": "8.4",
+      "autoDetectPaths": [
+        "/opt/homebrew/opt/php@8.4/bin/php",
+        "/usr/local/opt/php@8.4/bin/php",
+        "/usr/local/bin/php"
+      ],
+      "versionArgs": ["-v"]
+    }
+  },
+  "runtime": {
+    "type": "process-web",
+    "command": "{{ settings.phpPath }}",
+    "args": ["-S", "127.0.0.1:{{ port }}", "-t", "public", "public/index.php"]
+  }
+}
+```
+
+For `type: "executable"`, BabelChrome validates that the path exists, is executable, and optionally satisfies `minVersion` using `versionArgs`. Missing values are auto-detected from `autoDetectPaths` when possible. Manual values are saved per module and setting key from the host-rendered page `babelchrome://settings/<module-id>?runtimeSettings=1`.
+
+When required settings are invalid, BabelChrome does not start or prewarm the runtime. Opening the module navigates to its host-rendered settings page instead. Resolved values are available to runtime templates as `{{ settings.<key> }}` and to the child process environment as `BABELCHROME_SETTING_<KEY>`.
+
 ## Readiness And Setup
 
 Modules may declare an optional readiness check:
@@ -200,7 +233,7 @@ Modules may declare an optional readiness check:
 }
 ```
 
-Readiness commands are intended to be read-only, idempotent, and fast. The ExtensionHost runs supported readiness commands from the module root and expects a JSON object such as:
+Readiness commands are intended to be read-only, idempotent, and fast. They are not a replacement for `requiredSettings`: use `requiredSettings` for dependencies that are needed before the module process can start, and use readiness for optional health checks after the host can already execute the required command. Supported readiness commands run from the module root and expect a JSON object such as:
 
 ```json
 {

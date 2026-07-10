@@ -27,7 +27,7 @@ The ExtensionHost is currently implemented in PHP and embedded in the browser re
 
 ### Modules
 
-Modules are independent extension projects shipped as zip packages. A module may use PHP, Node.js, Ruby, Python, or another runtime, but that runtime belongs to the module and must be declared through the manifest and readiness checks. PHP-based web modules therefore run as `process-web` modules instead of relying on a browser-level PHP adapter.
+Modules are independent extension projects shipped as zip packages. A module may use PHP, Node.js, Ruby, Python, or another runtime, but that runtime belongs to the module and must be declared through the manifest. Required executable paths are declared through host-rendered `requiredSettings`, and optional health checks can use readiness. PHP-based web modules therefore run as `process-web` modules instead of relying on a browser-level PHP adapter.
 
 ### Libraries
 

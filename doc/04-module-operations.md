@@ -57,7 +57,7 @@ babelchrome://modules
 
 Then use `Install or update module zip` and select one or more generated zip files.
 
-Installing a zip whose module id is already present updates the installed module. The module remains independent from the native app bundle. Modules keep any runtime dependencies they need inside their own package or declare them through readiness. Static web modules usually ship only public files, while process-backed modules may ship their own executable runtime dependencies because the host treats those packages as module-owned files.
+Installing a zip whose module id is already present updates the installed module. The module remains independent from the native app bundle. Modules keep any runtime dependencies they need inside their own package or declare host-provided executable paths through `requiredSettings`. Static web modules usually ship only public files, while process-backed modules may ship their own executable runtime dependencies because the host treats those packages as module-owned files.
 
 ## Update Checks
 
