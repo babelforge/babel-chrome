@@ -41,7 +41,7 @@ It should not directly own browser, library, or module implementation files afte
 `browser/` contains the native BabelChrome application:
 
 - CEF/AppKit integration;
-- the ExtensionHost PHP runtime;
+- the native module host runtime;
 - native URL dispatching;
 - native module registry, installer, process runtime actions, process-web route proxying, on-demand process-runtime route execution, install/update/remove UI, and enable/disable state;
 - local protocols such as `babelchrome://viewer/...` and `babelchrome://server/...`.

@@ -3,7 +3,6 @@ set -euo pipefail
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 PROJECT_DIR="$(CDPATH= cd -- "${SCRIPT_DIR}/.." && pwd)"
-BABEL_CHROME_BROWSER_DIR="${BABEL_CHROME_BROWSER_DIR:-${BABEL_CHROME_WORKSPACE:-$(CDPATH= cd -- "${PROJECT_DIR}/browser" && pwd)}}"
 MODULES_DIR="${PROJECT_DIR}/modules"
 ZIP_DIR="${PROJECT_DIR}/zip"
 OLD_ZIP_DIR="${ZIP_DIR}/old"
@@ -143,7 +142,7 @@ ship_module() {
   fi
 
   target_path="${ZIP_DIR}/${module_id}-${module_version}.zip"
-  php "${BABEL_CHROME_BROWSER_DIR}/tools/ship-php-module.php" "${build_module_dir}" "${target_path}" >/dev/null
+  php "${PROJECT_DIR}/tools/ship-module.php" "${build_module_dir}" "${target_path}" >/dev/null
   archive_previous_module_zips "${module_id}" "${module_version}"
   echo "Built ${target_path}"
 }

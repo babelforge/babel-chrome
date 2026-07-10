@@ -13,8 +13,8 @@ Usage:
   ./tools/check-workspace.sh [--quick|--full] [--skip-install] [--skip-package]
 
 Modes:
-  --quick  Validate ExtensionHost, Markdown viewer, Demo module, process runtime/process web smoke tests, and focused packaging.
-  --full   Validate ExtensionHost, every module with a Composer QA script, every module smoke test, and all packaging.
+  --quick  Validate key modules, process runtime/process web smoke tests, and focused packaging.
+  --full   Validate every module with a Composer QA script, every module smoke test, and all packaging.
 
 Options:
   --skip-install   Do not run composer install before QA.
@@ -101,13 +101,11 @@ assert_submodules_initialized() {
 
 quick_projects() {
   printf '%s\n' \
-    "${PROJECT_DIR}/browser/src/ExtensionHost" \
     "${PROJECT_DIR}/modules/markdown-viewer-module" \
     "${PROJECT_DIR}/modules/demo-module"
 }
 
 full_projects() {
-  printf '%s\n' "${PROJECT_DIR}/browser/src/ExtensionHost"
   find "${PROJECT_DIR}/modules" -mindepth 2 -maxdepth 2 -name composer.json -print \
     | sort \
     | while IFS= read -r composer_file; do

@@ -100,7 +100,7 @@ X-BabelChrome-Module-Asset-Base-Url
 X-BabelChrome-File-Types
 ```
 
-The request query is proxied except for the ExtensionHost `token`. On module disable, remove, update, or `app.will-quit`, BabelChrome stops running process-web instances.
+The request query is proxied except for the native host `token`. On module disable, remove, update, or `app.will-quit`, BabelChrome stops running process-web instances.
 
 The modules page shows compact status badges for enabled state, readiness, and runtime state. The module details page exposes process runtime diagnostics from the host. For `process-web`, diagnostics include state, running flag, start policy, prewarm status when available, assigned port, process base URL, readiness URL, command, working directory, and captured logs. `Start runtime`, `Restart runtime`, and `Stop runtime` actions are shown when they match the current process state. Restart stops any current process, starts a new one, waits for readiness, and returns the refreshed runtime status. The internal endpoints are:
 
@@ -409,7 +409,7 @@ BabelChrome validates the envelope and broadcasts it to pages whose module decla
 Enabled modules can declare lifecycle hooks in `hooks`. BabelChrome currently dispatches:
 
 - `app.did-start` after the native window and restored tabs have been rebuilt;
-- `app.will-quit` before the ExtensionHost process is stopped.
+- `app.will-quit` before BabelChrome stops native module runtimes.
 
 The Project Launcher uses these hooks to snapshot launched servers on quit, stop them cleanly, and restart the previously running servers on the next launch.
 

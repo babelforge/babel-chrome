@@ -6,7 +6,7 @@ BabelChrome release artifacts are produced from independent repositories but coo
 
 ## Browser Artifact
 
-The native `.app` artifact is built from `browser/`. It should contain the native app, CEF runtime, resources, and ExtensionHost runtime. It should not contain installable module zips by default.
+The native `.app` artifact is built from `browser/`. It should contain the native app, CEF runtime, native resources, and no installable module zips by default. It does not embed a browser-level PHP/Symfony ExtensionHost.
 
 Browser releases can therefore move independently from module releases.
 

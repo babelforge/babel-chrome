@@ -6,15 +6,13 @@ Maintenance work should preserve repository ownership boundaries.
 
 ## Browser Changes
 
-Commit native app, ExtensionHost, and browser-specific documentation changes in `browser/`.
+Commit native app and browser-specific documentation changes in `browser/`.
 
-Run at least:
+Run at least the browser build when changing native host behavior:
 
 ```bash
-composer qa
+./tools/build-app.sh
 ```
-
-from `browser/src/ExtensionHost` when changing the PHP host.
 
 ## Library Changes
 
